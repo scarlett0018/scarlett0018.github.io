@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cycle Sync — Period Tracker for Google Calendar</title>
+  <meta name="description" content="Cycle Sync is a Chrome extension that syncs your period data from Apple Health, Clue, or Flo to Google Calendar with smart predictions." />
+  <meta name="author" content="Scarlett Xiao" />
+  <link rel="canonical" href="https://scarlett0018.github.io/cycle-sync.html" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Cycle Sync — Period Tracker for Google Calendar" />
+  <meta property="og:description" content="Sync your period data to Google Calendar with smart predictions. Privacy-first Chrome extension by Scarlett Xiao." />
+  <meta property="og:url" content="https://scarlett0018.github.io/cycle-sync.html" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #fbfaf8;
+      --bg-alt:      #f3f1ec;
+      --ink:         #1c1b19;
+      --ink-soft:    #57534e;
+      --ink-faint:   #8a857e;
+      --line:        #e6e2da;
+      --accent:      #b4541f;
+      --accent-soft: #f0e3d8;
+      --rose:        #c2637a;
+      --rose-soft:   #f9e4ea;
+      --card:        #ffffff;
+      --radius:      16px;
+      --maxw:        1080px;
+      --ff-display:  "Fraunces", Georgia, serif;
+      --ff-body:     "Inter", system-ui, sans-serif;
+      --shadow:      0 1px 2px rgba(28,27,25,.04), 0 12px 32px rgba(28,27,25,.06);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    * { margin: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--ff-body);
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 17px;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    ul, ol { list-style: none; padding: 0; }
+    .container { width: min(var(--maxw), 92vw); margin-inline: auto; }
+
+    /* Nav */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(251,250,248,.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      padding: 0;
+    }
+    .nav__inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 60px;
+    }
+    .nav__brand {
+      display: flex; align-items: center; gap: 8px;
+      font-family: var(--ff-display); font-weight: 600; font-size: 1.1rem;
+    }
+    .nav__dot { width: 10px; height: 10px; border-radius: 50%; background: var(--rose); }
+    .nav__back { font-size: 14px; color: var(--ink-soft); }
+    .nav__back:hover { color: var(--accent); }
+
+    /* Hero */
+    .hero {
+      padding: 80px 0 72px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--line);
+    }
+    .hero__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .hero__eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 600; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--rose);
+      background: var(--rose-soft); border-radius: 20px;
+      padding: 4px 14px; margin-bottom: 20px;
+    }
+    .hero__title {
+      font-family: var(--ff-display);
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      font-weight: 600; line-height: 1.12; letter-spacing: -.5px;
+      color: var(--ink); margin-bottom: 20px;
+    }
+    .hero__title em { color: var(--rose); font-style: italic; }
+    .hero__lede { font-size: 1.1rem; color: var(--ink-soft); line-height: 1.65; margin-bottom: 36px; }
+    .hero__actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 24px; border-radius: 10px;
+      font-size: 15px; font-weight: 600; cursor: pointer;
+      border: none; transition: all .15s;
+    }
+    .btn--primary { background: var(--rose); color: #fff; }
+    .btn--primary:hover { background: #a34f65; }
+    .btn--ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--line); }
+    .btn--ghost:hover { border-color: var(--ink-soft); }
+
+    /* Mockup */
+    .hero__mockup {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 20px;
+      max-width: 300px;
+      margin-left: auto;
+    }
+    .mockup__bar {
+      display: flex; align-items: center; gap: 6px;
+      padding-bottom: 14px; border-bottom: 1px solid var(--line); margin-bottom: 16px;
+    }
+    .mockup__dot { width: 9px; height: 9px; border-radius: 50%; }
+    .mockup__title { font-family: var(--ff-display); font-size: 15px; font-weight: 600; margin-left: 6px; }
+    .mockup__stat-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+    .mockup__stat { background: var(--bg); border-radius: 8px; padding: 10px 6px; text-align: center; }
+    .mockup__stat-val { font-size: 18px; font-weight: 700; color: var(--rose); }
+    .mockup__stat-label { font-size: 9px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: .5px; }
+    .mockup__event {
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--rose-soft); border-radius: 8px;
+      padding: 10px 12px; margin-bottom: 8px;
+      border-left: 3px solid var(--rose);
+    }
+    .mockup__event-date { font-size: 13px; font-weight: 600; }
+    .mockup__event-badge {
+      font-size: 9px; font-weight: 700; letter-spacing: .4px;
+      text-transform: uppercase; color: var(--rose);
+      background: white; border-radius: 10px; padding: 2px 7px;
+    }
+    .mockup__btn {
+      width: 100%; background: var(--rose); color: white;
+      border: none; border-radius: 8px; padding: 10px;
+      font-size: 13px; font-weight: 600; margin-top: 12px; cursor: default;
+      text-align: center;
+    }
+
+    /* How it works */
+    .section { padding: 80px 0; }
+    .section--alt { background: var(--bg-alt); }
+    .section__kicker {
+      font-size: 12px; font-weight: 600; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
+    }
+    .section__title {
+      font-family: var(--ff-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 600; letter-spacing: -.3px;
+      color: var(--ink); margin-bottom: 16px;
+    }
+    .section__sub { color: var(--ink-soft); font-size: 1.05rem; max-width: 540px; }
+
+    /* Steps */
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; margin-top: 48px; }
+    .step {
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: var(--radius); padding: 28px;
+    }
+    .step__num {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--rose-soft); color: var(--rose);
+      font-size: 14px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+    }
+    .step__title { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .step__desc { font-size: 14px; color: var(--ink-soft); line-height: 1.6; }
+
+    /* Features */
+    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 48px; }
+    .feature {
+      display: flex; gap: 16px; align-items: flex-start;
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: var(--radius); padding: 24px;
+    }
+    .feature__icon {
+      width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+      background: var(--rose-soft); color: var(--rose);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .feature__title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .feature__desc { font-size: 14px; color: var(--ink-soft); line-height: 1.55; }
+
+    /* Privacy */
+    .privacy-strip {
+      background: var(--ink); color: white;
+      padding: 60px 0;
+    }
+    .privacy-strip .section__kicker { color: var(--rose-soft); }
+    .privacy-strip .section__title { color: white; }
+    .privacy-strip .section__sub { color: rgba(255,255,255,.65); }
+    .privacy-pills { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+    .privacy-pill {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12);
+      border-radius: 10px; padding: 12px 18px;
+      font-size: 14px; font-weight: 500;
+    }
+    .privacy-pill__check { color: #6ee7a0; font-size: 16px; }
+
+    /* Supported apps */
+    .app-grid { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+    .app-chip {
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: 10px; padding: 10px 18px;
+      font-size: 14px; font-weight: 500; color: var(--ink-soft);
+    }
+
+    /* CTA */
+    .cta-section { padding: 80px 0; text-align: center; }
+    .cta-section .section__title { margin-bottom: 12px; }
+    .cta-section .section__sub { margin: 0 auto 36px; text-align: center; }
+    .cta-coming {
+      display: inline-block;
+      background: var(--bg-alt); border: 1.5px dashed var(--line);
+      border-radius: 12px; padding: 16px 32px;
+      font-size: 15px; color: var(--ink-soft);
+    }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid var(--line);
+      padding: 28px 0;
+    }
+    .footer__inner {
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 14px; color: var(--ink-faint);
+    }
+    .footer__links { display: flex; gap: 20px; }
+    .footer__links a:hover { color: var(--accent); }
+
+    /* Responsive */
+    @media (max-width: 760px) {
+      .hero__inner { grid-template-columns: 1fr; }
+      .hero__mockup { max-width: 100%; margin: 0; }
+      .footer__inner { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container">
+    <div class="nav__inner">
+      <div class="nav__brand">
+        <div class="nav__dot"></div>
+        Cycle Sync
+      </div>
+      <a href="https://scarlett0018.github.io/" class="nav__back">← Scarlett Xiao</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <div class="hero__inner">
+      <div>
+        <p class="hero__eyebrow">Chrome Extension</p>
+        <h1 class="hero__title">Your cycle,<br />on your <em>calendar</em>.</h1>
+        <p class="hero__lede">Cycle Sync imports your period data from Apple Health, Clue, Flo, or Natural Cycles and adds smart predictions directly to Google Calendar — with zero accounts and zero servers.</p>
+        <div class="hero__actions">
+          <span class="btn btn--primary" style="cursor:default;">Coming to Chrome Web Store</span>
+          <a href="privacy.html" class="btn btn--ghost">Privacy Policy</a>
+        </div>
+      </div>
+
+      <!-- UI Mockup -->
+      <div class="hero__mockup">
+        <div class="mockup__bar">
+          <div class="mockup__dot" style="background:#c2637a"></div>
+          <div class="mockup__title">Cycle Sync</div>
+        </div>
+        <div class="mockup__stat-row">
+          <div class="mockup__stat">
+            <div class="mockup__stat-val">29</div>
+            <div class="mockup__stat-label">avg cycle</div>
+          </div>
+          <div class="mockup__stat">
+            <div class="mockup__stat-val">5</div>
+            <div class="mockup__stat-label">avg period</div>
+          </div>
+          <div class="mockup__stat">
+            <div class="mockup__stat-val">+2</div>
+            <div class="mockup__stat-label">day shift</div>
+          </div>
+        </div>
+        <div class="mockup__event">
+          <div>
+            <div class="mockup__event-date">Jun 25, 2026</div>
+            <div style="font-size:11px;color:#7a5c62">1 day</div>
+          </div>
+          <span class="mockup__event-badge">predicted</span>
+        </div>
+        <div class="mockup__event">
+          <div>
+            <div class="mockup__event-date">Jul 26, 2026</div>
+            <div style="font-size:11px;color:#7a5c62">1 day</div>
+          </div>
+          <span class="mockup__event-badge">predicted</span>
+        </div>
+        <div class="mockup__btn">Sync to Google Calendar</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How it works -->
+<section class="section section--alt">
+  <div class="container">
+    <p class="section__kicker">How it works</p>
+    <h2 class="section__title">Three steps to your calendar</h2>
+    <p class="section__sub">No account. No sign-up. Just upload and sync.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step__num">1</div>
+        <div class="step__title">Export your health data</div>
+        <div class="step__desc">From Apple Health: Settings → Health → Export. From Clue, Flo, or Natural Cycles: use their CSV export option.</div>
+      </div>
+      <div class="step">
+        <div class="step__num">2</div>
+        <div class="step__title">Upload to Cycle Sync</div>
+        <div class="step__desc">Open the extension, drop your file. Cycle Sync parses your history locally in the browser and predicts the next 6 months of cycles.</div>
+      </div>
+      <div class="step">
+        <div class="step__num">3</div>
+        <div class="step__title">Sync to Google Calendar</div>
+        <div class="step__desc">One click adds all events. Predicted days appear in blood red with an RSVP invite — accept when your period arrives, decline if it doesn't come.</div>
+      </div>
+      <div class="step">
+        <div class="step__num">4</div>
+        <div class="step__title">Predictions improve over time</div>
+        <div class="step__desc">If your last period was 2 days late, the next prediction shifts by 2 days. Re-import periodically to keep predictions sharp.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="section">
+  <div class="container">
+    <p class="section__kicker">Features</p>
+    <h2 class="section__title">Everything in one extension</h2>
+    <div class="features">
+      <div class="feature">
+        <div class="feature__icon">◎</div>
+        <div>
+          <div class="feature__title">Smart delta predictions</div>
+          <div class="feature__desc">If this period was 2 days late, the next prediction shifts by 2 days. Automatically adapts to your actual cycle.</div>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature__icon">◈</div>
+        <div>
+          <div class="feature__title">Per-day calendar events</div>
+          <div class="feature__desc">Each day of a predicted period gets its own blood-red event, plus a ±1 day early buffer — no surprises.</div>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature__icon">✉</div>
+        <div>
+          <div class="feature__title">RSVP to confirm</div>
+          <div class="feature__desc">Predicted events include a self-invite. Accept when your period arrives, decline if it doesn't — builds a feedback loop.</div>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature__icon">⬡</div>
+        <div>
+          <div class="feature__title">6 months ahead</div>
+          <div class="feature__desc">Syncs your full 6-month predicted window in one shot, so your calendar always stays ahead.</div>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature__icon">⊕</div>
+        <div>
+          <div class="feature__title">Historical data included</div>
+          <div class="feature__desc">Past period days from your health export are also added to the calendar, giving you a complete timeline in one place.</div>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature__icon">⬤</div>
+        <div>
+          <div class="feature__title">No account required</div>
+          <div class="feature__desc">Works entirely through your existing Google account and Chrome login. Nothing to sign up for.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Supported apps -->
+<section class="section section--alt">
+  <div class="container">
+    <p class="section__kicker">Compatibility</p>
+    <h2 class="section__title">Works with your health app</h2>
+    <p class="section__sub">Cycle Sync reads the standard export formats from all major period and health tracking apps.</p>
+    <div class="app-grid">
+      <div class="app-chip">Apple Health (export.xml)</div>
+      <div class="app-chip">Clue (CSV)</div>
+      <div class="app-chip">Flo (CSV)</div>
+      <div class="app-chip">Natural Cycles (CSV)</div>
+      <div class="app-chip">Any CSV with date + flow columns</div>
+    </div>
+  </div>
+</section>
+
+<!-- Privacy -->
+<section class="privacy-strip">
+  <div class="container">
+    <p class="section__kicker">Privacy</p>
+    <h2 class="section__title">Your data never leaves your device.</h2>
+    <p class="section__sub">Menstrual health data is sensitive. Cycle Sync was built privacy-first from day one.</p>
+    <div class="privacy-pills">
+      <div class="privacy-pill"><span class="privacy-pill__check">✓</span> All processing happens locally in your browser</div>
+      <div class="privacy-pill"><span class="privacy-pill__check">✓</span> No servers. No cloud storage.</div>
+      <div class="privacy-pill"><span class="privacy-pill__check">✓</span> Health file is never uploaded anywhere</div>
+      <div class="privacy-pill"><span class="privacy-pill__check">✓</span> Only Google Calendar is contacted — using your own account</div>
+      <div class="privacy-pill"><span class="privacy-pill__check">✓</span> No tracking. No analytics. No ads.</div>
+    </div>
+    <p style="margin-top:28px;font-size:14px;color:rgba(255,255,255,.5);">
+      <a href="privacy.html" style="color:rgba(255,255,255,.7);text-decoration:underline;">Read the full privacy policy →</a>
+    </p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <p class="section__kicker">Get Cycle Sync</p>
+    <h2 class="section__title">Coming soon to the Chrome Web Store</h2>
+    <p class="section__sub">Currently in review. Free to use, forever.</p>
+    <div class="cta-coming">Pending Chrome Web Store approval — check back soon</div>
+    <p style="margin-top:24px;font-size:14px;color:var(--ink-faint);">
+      Questions? <a href="mailto:xiaoscarll@gmail.com" style="color:var(--accent);">xiaoscarll@gmail.com</a>
+    </p>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__inner">
+      <span>© 2026 Scarlett Xiao · Cycle Sync</span>
+      <div class="footer__links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="mailto:xiaoscarll@gmail.com">Contact</a>
+        <a href="https://scarlett0018.github.io/">Portfolio</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
