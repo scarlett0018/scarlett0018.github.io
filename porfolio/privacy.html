@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — Cycle Sync</title>
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://scarlett0018.github.io/privacy.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:        #FAF8F6;
+      --card:      #FFFFFF;
+      --fg:        #231820;
+      --fg-soft:   #6D5860;
+      --fg-faint:  #A99298;
+      --border:    rgba(35,24,32,.09);
+      --mauve:     #8C5A69;
+      --salmon:    #E58C78;
+      --radius:    14px;
+      --maxw:      720px;
+      --ff-display:"Cormorant Garamond", Georgia, serif;
+      --ff-body:   "Outfit", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; }
+    body {
+      font-family: var(--ff-body);
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--fg);
+      background: var(--bg);
+    }
+
+    header {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 24px;
+    }
+    .header-inner {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--fg);
+    }
+    .brand-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--mauve); }
+    .brand-name { font-family: var(--ff-display); font-size: 18px; font-weight: 600; letter-spacing: -.3px; }
+    .back-link {
+      font-size: 13px; color: var(--fg-soft);
+      text-decoration: none; border-bottom: 1px solid var(--border);
+    }
+    .back-link:hover { color: var(--mauve); border-color: var(--mauve); }
+
+    main {
+      max-width: var(--maxw);
+      margin: 56px auto 80px;
+      padding: 0 24px;
+    }
+
+    .page-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 1.2px;
+      text-transform: uppercase; color: var(--mauve);
+      margin-bottom: 12px;
+    }
+    h1 {
+      font-family: var(--ff-display);
+      font-size: clamp(32px, 5vw, 44px);
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -.5px;
+      color: var(--fg);
+      margin-bottom: 8px;
+    }
+    .meta {
+      font-size: 13px; color: var(--fg-faint); margin-bottom: 48px;
+    }
+
+    .summary-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-bottom: 48px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+    }
+    .summary-item {}
+    .summary-label {
+      font-size: 11px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: .8px; color: var(--fg-faint); margin-bottom: 4px;
+    }
+    .summary-value { font-size: 14px; font-weight: 500; color: var(--fg); }
+    .pill {
+      display: inline-block; padding: 2px 10px; border-radius: 20px;
+      font-size: 12px; font-weight: 600;
+    }
+    .pill-green  { background: #e6f4ec; color: #2d7a4f; }
+    .pill-blue   { background: #e8eef8; color: #2d4b6e; }
+
+    section { margin-bottom: 40px; }
+    h2 {
+      font-family: var(--ff-display);
+      font-size: 22px; font-weight: 600;
+      color: var(--fg); margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    p { color: var(--fg-soft); margin-bottom: 12px; }
+    p:last-child { margin-bottom: 0; }
+
+    ul { padding-left: 20px; color: var(--fg-soft); }
+    ul li { margin-bottom: 6px; }
+
+    .highlight {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--mauve);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 16px 20px;
+      margin: 16px 0;
+    }
+    .highlight p { margin: 0; font-size: 14px; }
+
+    .contact-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-top: 48px;
+    }
+    .contact-box h2 { border: none; padding: 0; margin-bottom: 8px; }
+    .contact-link { color: var(--mauve); }
+
+    footer {
+      text-align: center;
+      font-size: 12px; color: var(--fg-faint);
+      padding: 32px 24px;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="brand" href="https://scarlett0018.github.io/">
+      <div class="brand-dot"></div>
+      <span class="brand-name">Cycle Sync</span>
+    </a>
+    <a class="back-link" href="https://scarlett0018.github.io/">← Back to Scarlett Xiao</a>
+  </div>
+</header>
+
+<main>
+  <p class="page-label">Legal</p>
+  <h1>Privacy Policy</h1>
+  <p class="meta">Cycle Sync Chrome Extension &nbsp;·&nbsp; Last updated: June 15, 2026</p>
+
+  <div class="summary-card">
+    <div class="summary-item">
+      <div class="summary-label">Data stored on servers</div>
+      <div class="summary-value"><span class="pill pill-green">None</span></div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-label">Data sold or shared</div>
+      <div class="summary-value"><span class="pill pill-green">Never</span></div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-label">Tracking or analytics</div>
+      <div class="summary-value"><span class="pill pill-green">None</span></div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-label">Data location</div>
+      <div class="summary-value"><span class="pill pill-blue">Your device only</span></div>
+    </div>
+  </div>
+
+  <section>
+    <h2>Overview</h2>
+    <p>Cycle Sync is a Chrome extension that helps you sync menstrual cycle data from health apps to Google Calendar. We take your privacy seriously, especially when it comes to sensitive health information.</p>
+    <div class="highlight">
+      <p>All health data you import is processed entirely on your own device. It is never sent to any server, never stored in the cloud, and never shared with any third party — including us.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Information We Access</h2>
+    <p>Cycle Sync accesses the following data solely to provide its core functionality:</p>
+    <ul>
+      <li><strong>Health export files</strong> — When you upload an Apple Health XML or CSV file (e.g. from Clue, Flo, or Natural Cycles), Cycle Sync reads it locally in your browser to extract menstrual flow dates. The file contents are never transmitted anywhere.</li>
+      <li><strong>Google Calendar</strong> — With your explicit permission via Google OAuth, Cycle Sync creates and deletes calendar events in your primary Google Calendar. We request the minimum necessary scope: <code>calendar.events</code>.</li>
+      <li><strong>Google account email</strong> — Your email address is read once to set you as the RSVP attendee on predicted period events. It is not stored or used for any other purpose.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>How Your Data Is Stored</h2>
+    <p>Cycle Sync stores a copy of your parsed health records in <strong>Chrome's local storage</strong> on your own device. This allows the extension to remember your data between sessions without requiring you to re-upload your file each time.</p>
+    <ul>
+      <li>This data lives only on your device, in your Chrome profile.</li>
+      <li>It is never uploaded to any external server.</li>
+      <li>You can delete it at any time by clicking "Import different file" inside the extension, or by clearing your Chrome extension data.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Google Calendar Access</h2>
+    <p>Cycle Sync uses the Google Calendar API to create period events and send you RSVP invitations for predicted dates. Specifically:</p>
+    <ul>
+      <li>We create all-day events on your primary calendar for historical and predicted period days.</li>
+      <li>We send self-invitations to your Gmail address so you can accept or decline predictions.</li>
+      <li>We read the RSVP status of events created by this extension to improve future predictions.</li>
+      <li>We never read, modify, or delete any calendar events that we did not create.</li>
+    </ul>
+    <p>You can revoke Cycle Sync's access to your Google Calendar at any time at <a class="contact-link" href="https://myaccount.google.com/permissions" target="_blank" rel="noopener">myaccount.google.com/permissions</a>.</p>
+  </section>
+
+  <section>
+    <h2>Data Sharing</h2>
+    <p>We do not sell, rent, trade, or otherwise share your data with any third party. Period.</p>
+    <p>The only external service Cycle Sync communicates with is the Google Calendar API — on your behalf, using your own Google account credentials.</p>
+  </section>
+
+  <section>
+    <h2>Children's Privacy</h2>
+    <p>Cycle Sync is not directed at children under the age of 13. We do not knowingly collect any information from children.</p>
+  </section>
+
+  <section>
+    <h2>Changes to This Policy</h2>
+    <p>If we make material changes to this policy, we will update the "Last updated" date at the top of this page and, where appropriate, notify users via the Chrome Web Store listing.</p>
+  </section>
+
+  <div class="contact-box">
+    <h2>Contact</h2>
+    <p>Questions about this privacy policy? Reach out at <a class="contact-link" href="mailto:xiaoscarll@gmail.com">xiaoscarll@gmail.com</a>.</p>
+  </div>
+</main>
+
+<footer>
+  © 2026 Scarlett Xiao · Cycle Sync · <a class="contact-link" href="mailto:xiaoscarll@gmail.com">xiaoscarll@gmail.com</a>
+</footer>
+
+</body>
+</html>
