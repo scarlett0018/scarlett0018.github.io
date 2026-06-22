@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cycle Sync — Period data → Google Calendar</title>
+  <meta name="description" content="Cycle Sync syncs your iOS Health period data to Google Calendar with smart cycle predictions." />
+  <link rel="canonical" href="https://scarlett0018.github.io/cycle-sync.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:     #FAF8F6;
+      --ink:    #1a1a1a;
+      --soft:   #666;
+      --faint:  #999;
+      --line:   rgba(0,0,0,.08);
+      --accent: #b4541f;
+      --card:   #fff;
+      --maxw:   680px;
+      --ff-h:   "Fraunces", Georgia, serif;
+      --ff-b:   "Inter", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: var(--ff-b); background: var(--bg); color: var(--ink); font-size: 16px; line-height: 1.6; }
+
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 24px; border-bottom: 1px solid var(--line);
+      background: var(--card);
+    }
+    .nav-brand { font-family: var(--ff-h); font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; }
+    .nav-back { font-size: 13px; color: var(--faint); text-decoration: none; }
+    .nav-back:hover { color: var(--accent); }
+
+    main { max-width: var(--maxw); margin: 64px auto 80px; padding: 0 24px; }
+
+    .kicker { font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+    h1 { font-family: var(--ff-h); font-size: clamp(36px, 7vw, 52px); font-weight: 400; line-height: 1.1; letter-spacing: -.5px; margin-bottom: 20px; }
+    .tagline { font-size: 17px; color: var(--soft); margin-bottom: 36px; line-height: 1.7; }
+
+    .cta-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 64px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 22px; border-radius: 8px;
+      font-size: 14px; font-weight: 600; text-decoration: none; transition: opacity .15s;
+    }
+    .btn:hover { opacity: .85; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-ghost { color: var(--accent); border: 1.5px solid var(--accent); background: transparent; }
+
+    .divider { border: none; border-top: 1px solid var(--line); margin: 48px 0; }
+
+    h2 { font-family: var(--ff-h); font-size: 22px; font-weight: 600; margin-bottom: 20px; }
+
+    .steps { display: flex; flex-direction: column; gap: 16px; margin-bottom: 48px; }
+    .step { display: flex; gap: 16px; }
+    .step-num {
+      flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+      background: var(--accent); color: #fff;
+      font-size: 12px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 2px;
+    }
+    .step-text strong { display: block; font-size: 15px; margin-bottom: 2px; }
+    .step-text span { font-size: 14px; color: var(--soft); }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 48px; }
+    .chip { font-size: 13px; padding: 5px 12px; border-radius: 20px; background: rgba(180,84,31,.08); color: var(--accent); }
+
+    .privacy-note { font-size: 13px; color: var(--faint); }
+    .privacy-note a { color: var(--accent); }
+
+    footer { text-align: center; font-size: 12px; color: var(--faint); padding: 32px 24px; border-top: 1px solid var(--line); }
+    footer a { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="https://scarlett0018.github.io/">Scarlett Xiao</a>
+  <a class="nav-back" href="https://scarlett0018.github.io/">← Back</a>
+</nav>
+
+<main>
+  <p class="kicker">Chrome Extension</p>
+  <h1>Cycle Sync</h1>
+  <p class="tagline">
+    Import your period data from Apple Health or any CSV export,
+    and push it straight to Google Calendar — with smart predictions for the next 6 months.
+  </p>
+
+  <div class="cta-row">
+    <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/cycle-sync/colaijhdgfcmighbkapgpmcdclekbnhb" target="_blank" rel="noopener">Install on Chrome — it's free</a>
+    <a class="btn btn-ghost" href="privacy.html">Privacy policy</a>
+  </div>
+
+  <hr class="divider" />
+
+  <h2>How it works</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text">
+        <strong>Export your data</strong>
+        <span>Apple Health XML or a CSV from Clue, Flo, or Natural Cycles.</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text">
+        <strong>Upload to Cycle Sync</strong>
+        <span>Drag in the file. Everything is parsed locally — nothing leaves your device.</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text">
+        <strong>Sync to Google Calendar</strong>
+        <span>Historical days go in as past events. Predicted windows appear as RSVP invites — accept if your period arrived, decline if not.</span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <h2>What's included</h2>
+  <div class="chips">
+    <span class="chip">Apple Health XML</span>
+    <span class="chip">CSV import</span>
+    <span class="chip">6-month predictions</span>
+    <span class="chip">Per-day events</span>
+    <span class="chip">RSVP tracking</span>
+    <span class="chip">One-click cleanup</span>
+    <span class="chip">100% local — no server</span>
+  </div>
+
+  <p class="privacy-note">
+    Your health data never leaves your device.
+    No tracking, no account, no cloud. <a href="privacy.html">Full privacy policy →</a>
+  </p>
+</main>
+
+<footer>
+  Built by <a href="https://scarlett0018.github.io/">Scarlett Xiao</a>
+  &nbsp;·&nbsp; <a href="mailto:xiaoscarll@gmail.com">xiaoscarll@gmail.com</a>
+</footer>
+
+</body>
+</html>
